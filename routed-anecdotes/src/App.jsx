@@ -1,7 +1,6 @@
 import {
   useMatch,
-  Routes, Route, Link, Navigate,
-  useParams,useNavigate
+  Routes, Route, Link
 } from 'react-router-dom'
 import { useState } from 'react'
 
