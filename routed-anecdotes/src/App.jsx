@@ -1,7 +1,7 @@
 import {
   useMatch,
   Routes, Route, Link,
-  Navigate, useParams, useNavigate
+  useNavigate
 } from 'react-router-dom'
 import { useState } from 'react'
 
@@ -32,7 +32,7 @@ const AnecdoteList = ({ anecdotes }) => (
 
 const Anecdote = ({ anecdote }) =>(
   <>
-    <h2>{anecdote.content}</h2>
+    <h2><em>' {anecdote.content} '</em> by {anecdote.author}</h2>
     <div>has: {anecdote.votes} votes</div>
     <div>for more info see: <a href={`${anecdote.info}`}>{anecdote.info}</a></div>
   </>
@@ -66,6 +66,7 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
+  const navigate = useNavigate()
 
 
   const handleSubmit = (e) => {
@@ -76,6 +77,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    navigate('/')
   }
 
   return (
@@ -101,6 +103,16 @@ const CreateNew = (props) => {
 
 }
 
+const Notification = ({message}) =>{
+  const style= {
+    display:'None',
+    border: '1px solid black',
+    borderRadius:10,
+    padding:3
+  }
+  return <>{message && <div style={{...style,display:''}}><em>{message}</em></div>}</>
+}
+
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -119,11 +131,13 @@ const App = () => {
     }
   ])
 
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState()
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`a new anecdote '${anecdote.content}' created!`)
+    setTimeout(()=>{setNotification(null)},5000)
   }
 
   const anecdoteById = (id) =>
@@ -150,6 +164,7 @@ const App = () => {
       <h1>Software anecdotes</h1>
       
       <Menu />
+      <Notification message={notification} />
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />}/>
         <Route path="/anecdotes/:id" element={<Anecdote anecdote={anecdote} />}/>
