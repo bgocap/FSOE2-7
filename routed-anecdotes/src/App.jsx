@@ -67,15 +67,20 @@ const CreateNew = (props) => {
   const content = useField('text')
   const author = useField('text')
   const info = useField('text')
+  const resetAllFields = () =>{
+    content.reset()
+    author.reset()
+    info.reset()
+  }
   const navigate = useNavigate()
 
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content:content.element.value,
+      author:author.element.value,
+      info:info.element.value,
       votes: 0
     })
     navigate('/')
@@ -84,21 +89,22 @@ const CreateNew = (props) => {
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} id='newNoteForm'>
         <div>
           content
-          <input {...content} />
+          <input {...content.element} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...author.element} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...info.element} />
         </div>
-        <button>create</button>
       </form>
+      <button type='submit' form='newNoteForm'>create</button>
+      <button onClick={resetAllFields}>reset</button>
     </div>
   )
 
