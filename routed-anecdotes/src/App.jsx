@@ -85,7 +85,7 @@ const CreateNew = (props) => {
     })
     navigate('/')
   }
-
+  //Exercise 7.6 (already using spread syntax)
   return (
     <div>
       <h2>create a new anecdote</h2>
