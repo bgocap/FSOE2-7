@@ -23,3 +23,21 @@ Exercises are commits. Done **6** out of *21*
  ┣ 📜package.json
  ┗ 📜vite.config.js
 ```
+
+<h3>Country-hook</h3>
+
+```
+📦routed-anecdotes
+ ┣ 📂public
+ ┃ ┗ 📜vite.svg
+ ┣ 📂src
+ ┃ ┣ 📜App.jsx
+ ┃ ┣ 📜main.jsx
+ ┃ ┗ 📜index.css
+ ┣ 📜.eslintrc.cjs
+ ┣ 📜.gitignore
+ ┣ 📜README.md
+ ┣ 📜index.html
+ ┣ 📜package.json
+ ┗ 📜vite.config.js
+```
