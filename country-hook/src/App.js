@@ -17,44 +17,41 @@ const useField = (type) => {
 
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
-  console.log('how many times useCountry values=> country:',country,'name:',name)
-  
+
   useEffect(() => {
-    console.log('value of name in the useEffect hook:',name)
-    if(name){
-      console.log('insed IF of useffect')
+      if(name){
       axios
-      .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${name}`)
-      .then(response => {
-          const newCountry=response.data
-          setCountry(newCountry)
-    })}
+        .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${name}`)
+        .then(response => {
+            setCountry({...response,found:true})
+        })
+        .catch(error => setCountry({found:false}))
+      }
   
-  })
+  },[name])
   
   return country
 }
 
 const Country = ({ country }) => {
-  console.log('CountryElement - received country: ',country)
   if (!country) {
     return null
   }
 
-/*   if (!country.found) {
+   if (!country.found) {
     return (
       <div>
         not found...
       </div>
     )
-  } */
+  }
 
   return (
     <div>
-      <h3>{country.data.name} </h3>
-      <div>capital {country.data.capital} </div>
-      <div>population {country.data.population}</div> 
-      <img src={country.data.flag} height='100' alt={`flag of ${country.data.name}`}/>  
+      <h2>{country.data.name.common} </h2>
+      <p>Capital: <b>{country.data.capital}</b></p>
+      <p>Population: <b>{country.data.population}</b></p>
+      <p style={{fontSize:150,margin:0}}>{country.data.flag}</p>  
     </div>
   )
 }
@@ -68,7 +65,6 @@ const App = () => {
   const fetch = (e) => {
     e.preventDefault()
     setName(nameInput.value)
-    console.log('WhenClick-country:',country,'name:',name)
   }
 
   return (
