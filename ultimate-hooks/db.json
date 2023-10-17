@@ -1,0 +1,59 @@
+{
+  "notes": [
+    {
+      "content": "the app state is in redux store",
+      "important": false,
+      "id": 1
+    },
+    {
+      "content": "state changes are made with actions",
+      "important": false,
+      "id": 2
+    },
+    {
+      "content": "Test1",
+      "id": 3
+    },
+    {
+      "content": "Test 2",
+      "id": 4
+    }
+  ],
+  "persons": [
+    {
+      "name": "Pedro Almodovar",
+      "number": "999-2334-2222",
+      "id": 1
+    },
+    {
+      "name": "Julio Iglesias",
+      "number": "23-45678765",
+      "id": 2
+    },
+    {
+      "name": "Ramon Castilla",
+      "number": "123456789",
+      "id": 3
+    },
+    {
+      "name": "Essi Kortengas",
+      "number": "0463347365",
+      "id": 4
+    },
+    {
+      "name": "Fernando Cásares",
+      "number": "60328495996",
+      "id": 5
+    },
+    {
+      "name": "Testi Persona",
+      "number": "3343-3334",
+      "id": 6
+    },
+    {
+      "name": "Testi Personx",
+      "number": "23456-2345",
+      "id": 7
+    }
+  ]
+}
