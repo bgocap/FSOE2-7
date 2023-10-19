@@ -3,7 +3,7 @@ const baseUrl = 'http:/localhost:3001/api/notes'
 
 let token = null
 
-const setToken = newToken => {
+const setToken = (newToken) => {
   token = `bearer ${newToken}`
 }
 
@@ -12,9 +12,9 @@ const getAll = async () => {
   return response.data
 }
 
-const create = async newObject => {
+const create = async (newObject) => {
   const config = {
-    headers: { Authorization: token },
+    headers: { Authorization: token }
   }
 
   const response = await axios.post(baseUrl, newObject, config)
@@ -22,7 +22,7 @@ const create = async newObject => {
 }
 
 const update = async (id, newObject) => {
-  const response = await axios.put(`${ baseUrl }/${id}`, newObject)
+  const response = await axios.put(`${baseUrl}/${id}`, newObject)
   return response.data
 }
 
