@@ -1,7 +1,7 @@
 <h1>Full Stack Web Development Open - Part 7</h1>
 
 React router, custom hooks, styling app with CSS and webpack</br>
-Exercises are commits. Done **10** out of _21_
+Exercises are commits. Done **11** out of _21_
 </br></br>
 
 <h3>Routed-Anecdotes</h3>
@@ -60,5 +60,48 @@ Exercises are commits. Done **10** out of _21_
  ┣ 📜index.html
  ┣ 📜package-lock.json
  ┣ 📜package.json
+ ┗ 📜vite.config.js
+```
+
+<h3>Bloglist-FrontEnd with Redux</h3>
+
+```
+📦bloglist-frontend
+ ┣ 📂node_modules (.gitignore)
+ ┣ 📂public
+ ┃ ┗ 📜vite.svg
+ ┣ 📂cypress
+ ┃  ┣ 📂e2e
+ ┃  ┃ ┗ 📜blogListApp.cy.js
+ ┃  ┣ 📂fixtures
+ ┃  ┃ ┗ 📜example.json
+ ┃  ┗ 📂support
+ ┃    ┣ 📜commands.js
+ ┃    ┗ 📜e2e.js
+ ┣ 📂src
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📜Togglable.jsx
+ ┃ ┃ ┣ 📜Notification.jsx
+ ┃ ┃ ┣ 📜LoginForm.jsx
+ ┃ ┃ ┣ 📜NewBlogForm.jsx
+ ┃ ┃ ┣ 📜Blog.test.jsx
+ ┃ ┃ ┗ 📜Blog.jsx
+ ┃ ┣ 📂services
+ ┃ ┃ ┣ 📜login.jsx
+ ┃ ┃ ┗ 📜blogs.js
+ ┃ ┣ 📂reducers
+ ┃ ┃ ┣ 📜blogReducer.js
+ ┃ ┃ ┗ 📜notificationReducer.js
+ ┃ ┣ 📜App.jsx
+ ┃ ┗ 📜main.jsx
+ ┣ 📜.cypress.config.js
+ ┣ 📜.babelrc
+ ┣ 📜.eslintrc.cjs
+ ┣ 📜.gitignore
+ ┣ 📜README.md
+ ┣ 📜index.html
+ ┣ 📜package-lock.json
+ ┣ 📜package.json
+ ┣ 📜store.js
  ┗ 📜vite.config.js
 ```
