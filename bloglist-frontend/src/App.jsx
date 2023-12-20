@@ -8,10 +8,10 @@ import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
 import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "./reducers/notificationReducer";
-import { addBlog, initializeBlogs } from "./reducers/blogsReducer";
+import { addBlog, initializeBlogs, likeBlog } from "./reducers/blogsReducer";
+import BlogList from "./components/BlogList";
 
 const App = () => {
-  /* const [blogs, setBlogs] = useState([]); */
   const [user, setUser] = useState(null);
   const newBlogFormRef = useRef();
   const dispatch = useDispatch();
@@ -29,13 +29,9 @@ const App = () => {
     }
   }, []);
 
-  const blogs = useSelector((state) => state.blogs);
-  console.log(blogs);
-
   const addNewBlog = async (newBlog) => {
     try {
       newBlogFormRef.current.toggleVisibility();
-      //const returnedBlog = await blogService.createBlog(newBlog);
       const content = { ...newBlog, user: { name: user.name } };
       dispatch(addBlog(content, user.name));
       dispatch(
@@ -46,68 +42,6 @@ const App = () => {
           },
           5
         )
-      );
-    } catch (exception) {
-      dispatch(
-        setNotification(
-          {
-            message: `Something went wrong`,
-            isError: true,
-          },
-          5
-        )
-      );
-    }
-  };
-
-  const addLikes = async (likedBlogId) => {
-    const fullBlog = blogs.find((blg) => blg.id === likedBlogId);
-    const likedBlog = {
-      user: fullBlog.user.id,
-      likes: fullBlog.likes + 1,
-      author: fullBlog.author,
-      title: fullBlog.title,
-      url: fullBlog.url,
-    };
-    try {
-      const returnedBlog = await blogService.addLikes(likedBlog, likedBlogId);
-      const updatedBlogs = blogs.map((blg) =>
-        blg.id === likedBlogId ? { ...blg, likes: likedBlog.likes } : blg
-      );
-      setBlogs(updatedBlogs);
-      dispatch(
-        setNotification(
-          {
-            message: `you have voted for '${likedBlog.title}'`,
-            isError: false,
-          },
-          5
-        )
-      );
-    } catch (exception) {
-      dispatch(
-        setNotification(
-          {
-            message: `Something went wrong`,
-            isError: true,
-          },
-          5
-        )
-      );
-    }
-  };
-
-  const removeBlog = async (idTodelete) => {
-    try {
-      blogService.deleteBlog(idTodelete);
-      const updatedBlogs = blogs.filter((blg) => blg.id !== idTodelete);
-      setBlogs(updatedBlogs);
-      setNotification(
-        {
-          message: "Blog deleted",
-          isError: false,
-        },
-        5
       );
     } catch (exception) {
       dispatch(
@@ -155,16 +89,6 @@ const App = () => {
     </Togglable>
   );
 
-  /*   {blogs
-    .map((blog) => (
-      <Blog
-        key={blog.id}
-        blog={blog}
-        handleLikes={addLikes}
-        currentUser={user}
-        deleteHandler={removeBlog}
-      />
-    ))} */
   return (
     <div>
       <h1 style={{ fontSize: 50 }}>
@@ -179,18 +103,9 @@ const App = () => {
             <button onClick={() => handleLogout()}>logout</button>
           </p>
           {newBlogForm()}
-          <div className="allBlogs"></div>
+          <BlogList userId={user.id} />
         </div>
       )}
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLikes={addLikes}
-          currentUser={user}
-          deleteHandler={removeBlog}
-        />
-      ))}
     </div>
   );
 };
