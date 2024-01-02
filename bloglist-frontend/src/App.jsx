@@ -1,7 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
+import { useEffect, useRef } from "react";
 import blogService from "./services/blogs";
-import loginService from "./services/login";
 import Notification from "./components/Notification";
 import NewBlogForm from "./components/NewBlogForm";
 import LoginForm from "./components/LoginForm";
@@ -10,11 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "./reducers/notificationReducer";
 import { addBlog, initializeBlogs, likeBlog } from "./reducers/blogsReducer";
 import BlogList from "./components/BlogList";
+import { deleteUserInfo, setUserInfo } from "./reducers/currenUserReducer";
 
 const App = () => {
-  const [user, setUser] = useState(null);
   const newBlogFormRef = useRef();
   const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.userInfo);
 
   useEffect(() => {
     dispatch(initializeBlogs());
@@ -24,7 +23,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      dispatch(setUserInfo(user));
       blogService.setToken(user.token);
     }
   }, []);
@@ -32,8 +31,8 @@ const App = () => {
   const addNewBlog = async (newBlog) => {
     try {
       newBlogFormRef.current.toggleVisibility();
-      const content = { ...newBlog, user: { name: user.name } };
-      dispatch(addBlog(content, user.name));
+      const content = { ...newBlog, user: { name: currentUser.name } };
+      dispatch(addBlog(content, currentUser.name));
       dispatch(
         setNotification(
           {
@@ -56,27 +55,9 @@ const App = () => {
     }
   };
 
-  const handleLogin = async (userData) => {
-    try {
-      const user = await loginService.login(userData);
-      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
-      setUser(user);
-    } catch (exception) {
-      dispatch(
-        setNotification(
-          {
-            message: `Wrong password or username`,
-            isError: true,
-          },
-          5
-        )
-      );
-    }
-  };
-
   const handleLogout = async () => {
     window.localStorage.removeItem("loggedBlogAppUser");
-    setUser("");
+    dispatch(deleteUserInfo());
   };
 
   const newBlogForm = () => (
@@ -95,15 +76,15 @@ const App = () => {
         <em>Blogs</em>
       </h1>
       <Notification />
-      {!user && <LoginForm loginHandler={handleLogin} />}
-      {user && (
+      {!currentUser && <LoginForm />}
+      {currentUser && (
         <div>
           <p>
-            {user.name} logged in{" "}
+            {currentUser.name} logged in{" "}
             <button onClick={() => handleLogout()}>logout</button>
           </p>
           {newBlogForm()}
-          <BlogList userId={user.id} />
+          <BlogList userId={currentUser.id} />
         </div>
       )}
     </div>

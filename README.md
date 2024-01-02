@@ -1,7 +1,7 @@
 <h1>Full Stack Web Development Open - Part 7</h1>
 
 React router, custom hooks, styling app with CSS and webpack</br>
-Exercises are commits. Done **12** out of _21_
+Exercises are commits. Done **13** out of _21_
 </br></br>
 
 <h3>Routed-Anecdotes</h3>
@@ -91,6 +91,7 @@ Exercises are commits. Done **12** out of _21_
  ┃ ┃ ┣ 📜login.jsx
  ┃ ┃ ┗ 📜blogs.js
  ┃ ┣ 📂reducers
+ ┃ ┃ ┣ 📜currentUserReducer.js
  ┃ ┃ ┣ 📜blogReducer.js
  ┃ ┃ ┗ 📜notificationReducer.js
  ┃ ┣ 📜App.jsx
