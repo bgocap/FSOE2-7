@@ -66,7 +66,7 @@ Exercises are commits. Done **13** out of _21_
 <h3>Bloglist-FrontEnd with Redux</h3>
 
 ```
-📦bloglist-frontend
+📦bloglist-frontend-Redux
  ┣ 📂node_modules (.gitignore)
  ┣ 📂public
  ┃ ┗ 📜vite.svg
