@@ -107,3 +107,37 @@ Exercises are commits. Done **13** out of _21_
  ┣ 📜store.js
  ┗ 📜vite.config.js
 ```
+
+<h3>Bloglist-FrontEnd with ReactQuery & Context</h3>
+
+```
+📦bloglist-frontend-Rq
+ ┣ 📂node_modules (.gitignore)
+ ┣ 📂public
+ ┣ 📂cypress
+ ┣ 📂src
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📜Togglable.jsx
+ ┃ ┃ ┣ 📜Notification.jsx
+ ┃ ┃ ┣ 📜NotificationContext.jsx
+ ┃ ┃ ┣ 📜LoginForm.jsx
+ ┃ ┃ ┣ 📜NewBlogForm.jsx
+ ┃ ┃ ┣ 📜Blog.test.jsx
+ ┃ ┃ ┣ 📜BlogList.jsx
+ ┃ ┃ ┗ 📜Blog.jsx
+ ┃ ┣ 📂services
+ ┃ ┃ ┣ 📜login.jsx
+ ┃ ┃ ┗ 📜blogs.js
+ ┃ ┣ 📜App.jsx
+ ┃ ┗ 📜main.jsx
+ ┣ 📜.cypress.config.js
+ ┣ 📜.babelrc
+ ┣ 📜.eslintrc.cjs
+ ┣ 📜.gitignore
+ ┣ 📜README.md
+ ┣ 📜index.html
+ ┣ 📜package-lock.json
+ ┣ 📜package.json
+ ┣ 📜store.js
+ ┗ 📜vite.config.js
+```

@@ -16,8 +16,8 @@ const App = () => {
     text: null,
     isError: null,
   });
-  console.log(setNotificationValue());
-  const dispatch = setNotificationValue();
+
+  const NotificationDispatch = setNotificationValue();
 
   const newBlogFormRef = useRef();
 
@@ -39,7 +39,7 @@ const App = () => {
       newBlogFormRef.current.toggleVisibility();
       const returnedBlog = await blogService.createBlog(newBlog);
       setBlogs(blogs.concat({ ...returnedBlog, user: { name: user.name } }));
-      dispatch({
+      NotificationDispatch({
         type: "SET",
         content: {
           text: `${returnedBlog.title} by ${returnedBlog.author} has been submited`,
@@ -47,13 +47,13 @@ const App = () => {
         },
       });
     } catch (exception) {
-      dispatch({
+      NotificationDispatch({
         type: "SET",
         content: { text: "Something went wrong", isError: true },
       });
     }
     setTimeout(() => {
-      dispatch({ type: "RESET" });
+      NotificationDispatch({ type: "RESET" });
     }, 5000);
   };
 
@@ -72,14 +72,24 @@ const App = () => {
         blg.id === likedBlogId ? { ...blg, likes: likedBlog.likes } : blg
       );
       setBlogs(updatedBlogs);
+      NotificationDispatch({
+        type: "SET",
+        content: {
+          text: `You voted for ${returnedBlog.title} by ${returnedBlog.author}`,
+          isError: false,
+        },
+      });
     } catch (exception) {
-      setNotificationMessage({
-        text: "Something went wrong",
-        isError: "error",
+      NotificationDispatch({
+        type: "SET",
+        content: {
+          text: "Something went wrong",
+          isError: true,
+        },
       });
     }
     setTimeout(() => {
-      setNotificationMessage({ text: null, isError: null });
+      NotificationDispatch({ type: "RESET" });
     }, 5000);
   };
 
@@ -88,12 +98,21 @@ const App = () => {
       blogService.deleteBlog(idTodelete);
       const updatedBlogs = blogs.filter((blg) => blg.id !== idTodelete);
       setBlogs(updatedBlogs);
-      setNotificationMessage({ text: "Blog deleted", isError: false });
+      NotificationDispatch({
+        type: "SET",
+        content: { text: "Blog deleted", isError: false },
+      });
     } catch (exception) {
-      setNotificationMessage({ text: "Something went wrong", isError: true });
+      NotificationDispatch({
+        type: "SET",
+        content: {
+          text: "Something went wrong",
+          isError: true,
+        },
+      });
     }
     setTimeout(() => {
-      setNotificationMessage({ text: null, isError: null });
+      NotificationDispatch({ type: "RESET" });
     }, 5000);
   };
 
@@ -102,19 +121,24 @@ const App = () => {
       const user = await loginService.login(userData);
       window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
       setUser(user);
+      NotificationDispatch({ type: "RESET" });
     } catch (exception) {
-      setNotificationMessage({
-        text: "Wrong username or password",
-        isError: true,
+      NotificationDispatch({
+        type: "SET",
+        content: {
+          text: "Wrong username or password",
+          isError: true,
+        },
       });
       setTimeout(() => {
-        setNotificationMessage({ text: null, isError: null });
+        NotificationDispatch({ type: "RESET" });
       }, 5000);
     }
   };
 
   const handleLogout = async () => {
     window.localStorage.removeItem("loggedBlogAppUser");
+    NotificationDispatch({ type: "RESET" });
     setUser("");
   };
   const newBlogForm = () => (
