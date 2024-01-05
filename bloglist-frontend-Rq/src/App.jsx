@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { setNotificationValue } from "./components/NotificationContext";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
@@ -9,21 +10,36 @@ import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState(null);
-
-  const [notificationMessage, setNotificationMessage] = useState({
-    text: null,
-    isError: null,
+  const result = useQuery({
+    queryKey: ["blogs"],
+    queryFn: blogService.getAll,
+    refetchOnWindowFocus: false,
   });
-
+  const blogs = result.data;
   const NotificationDispatch = setNotificationValue();
-
   const newBlogFormRef = useRef();
-
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+  const [user, setUser] = useState(null);
+  const queryClient = useQueryClient();
+  const newBlogMutation = useMutation({
+    mutationFn: blogService.createBlog,
+    onSuccess: (newBlog) => {
+      const blogs2 = queryClient.getQueryData(["blogs"]);
+      queryClient.setQueryData(["blogs"], blogs2.concat(newBlog));
+      NotificationDispatch({
+        type: "SET",
+        content: {
+          text: `${newBlog.title} by ${newBlog.author} has been submited`,
+          isError: false,
+        },
+      });
+    },
+    onError: () => {
+      NotificationDispatch({
+        type: "SET",
+        content: { text: "Something went wrong", isError: true },
+      });
+    },
+  });
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -37,21 +53,9 @@ const App = () => {
   const addNewBlog = async (newBlog) => {
     try {
       newBlogFormRef.current.toggleVisibility();
-      const returnedBlog = await blogService.createBlog(newBlog);
-      setBlogs(blogs.concat({ ...returnedBlog, user: { name: user.name } }));
-      NotificationDispatch({
-        type: "SET",
-        content: {
-          text: `${returnedBlog.title} by ${returnedBlog.author} has been submited`,
-          isError: false,
-        },
-      });
-    } catch (exception) {
-      NotificationDispatch({
-        type: "SET",
-        content: { text: "Something went wrong", isError: true },
-      });
-    }
+      const returnedBlog = newBlogMutation.mutate(newBlog);
+      console.log(returnedBlog);
+    } catch (exception) {}
     setTimeout(() => {
       NotificationDispatch({ type: "RESET" });
     }, 5000);
@@ -156,10 +160,7 @@ const App = () => {
       <h1 style={{ fontSize: 50 }}>
         <em>Blogs</em>
       </h1>
-      <Notification
-        message={notificationMessage.text}
-        isError={notificationMessage.isError}
-      />
+      <Notification />
       {!user && <LoginForm loginHandler={handleLogin} />}
       {user && (
         <div>
@@ -169,17 +170,18 @@ const App = () => {
           </p>
           {newBlogForm()}
           <div className="allBlogs">
-            {blogs
-              .sort((blgA, blgB) => blgB.likes - blgA.likes)
-              .map((blog) => (
-                <Blog
-                  key={blog.id}
-                  blog={blog}
-                  handleLikes={addLikes}
-                  currentUser={user}
-                  deleteHandler={removeBlog}
-                />
-              ))}
+            {blogs &&
+              blogs
+                .sort((blgA, blgB) => blgB.likes - blgA.likes)
+                .map((blog) => (
+                  <Blog
+                    key={blog.id}
+                    blog={blog}
+                    handleLikes={addLikes}
+                    currentUser={user}
+                    deleteHandler={removeBlog}
+                  />
+                ))}
           </div>
         </div>
       )}
