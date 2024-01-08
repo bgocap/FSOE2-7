@@ -10,6 +10,15 @@ import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
 
 const App = () => {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      blogService.setToken(user.token);
+    }
+  }, []);
   const result = useQuery({
     queryKey: ["blogs"],
     queryFn: blogService.getAll,
@@ -18,13 +27,16 @@ const App = () => {
   const blogs = result.data;
   const NotificationDispatch = setNotificationValue();
   const newBlogFormRef = useRef();
-  const [user, setUser] = useState(null);
+
   const queryClient = useQueryClient();
   const newBlogMutation = useMutation({
     mutationFn: blogService.createBlog,
     onSuccess: (newBlog) => {
-      const blogs2 = queryClient.getQueryData(["blogs"]);
-      queryClient.setQueryData(["blogs"], blogs2.concat(newBlog));
+      const blogs = queryClient.getQueryData(["blogs"]);
+      queryClient.setQueryData(
+        ["blogs"],
+        blogs.concat({ ...newBlog, user: { name: user.name, id: user.id } })
+      );
       NotificationDispatch({
         type: "SET",
         content: {
@@ -40,73 +52,16 @@ const App = () => {
       });
     },
   });
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
-    }
-  }, []);
-
-  const addNewBlog = async (newBlog) => {
-    try {
-      newBlogFormRef.current.toggleVisibility();
-      const returnedBlog = newBlogMutation.mutate(newBlog);
-      console.log(returnedBlog);
-    } catch (exception) {}
-    setTimeout(() => {
-      NotificationDispatch({ type: "RESET" });
-    }, 5000);
-  };
-
-  const addLikes = async (likedBlogId) => {
-    const fullBlog = blogs.find((blg) => blg.id === likedBlogId);
-    const likedBlog = {
-      user: fullBlog.user.id,
-      likes: fullBlog.likes + 1,
-      author: fullBlog.author,
-      title: fullBlog.title,
-      url: fullBlog.url,
-    };
-    try {
-      const returnedBlog = await blogService.addLikes(likedBlog, likedBlogId);
-      const updatedBlogs = blogs.map((blg) =>
-        blg.id === likedBlogId ? { ...blg, likes: likedBlog.likes } : blg
-      );
-      setBlogs(updatedBlogs);
-      NotificationDispatch({
-        type: "SET",
-        content: {
-          text: `You voted for ${returnedBlog.title} by ${returnedBlog.author}`,
-          isError: false,
-        },
-      });
-    } catch (exception) {
-      NotificationDispatch({
-        type: "SET",
-        content: {
-          text: "Something went wrong",
-          isError: true,
-        },
-      });
-    }
-    setTimeout(() => {
-      NotificationDispatch({ type: "RESET" });
-    }, 5000);
-  };
-
-  const removeBlog = async (idTodelete) => {
-    try {
-      blogService.deleteBlog(idTodelete);
-      const updatedBlogs = blogs.filter((blg) => blg.id !== idTodelete);
-      setBlogs(updatedBlogs);
+  const deleteBlogMutation = useMutation({
+    mutationFn: blogService.deleteBlog,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
       NotificationDispatch({
         type: "SET",
         content: { text: "Blog deleted", isError: false },
       });
-    } catch (exception) {
+    },
+    onError: () => {
       NotificationDispatch({
         type: "SET",
         content: {
@@ -114,7 +69,49 @@ const App = () => {
           isError: true,
         },
       });
-    }
+    },
+  });
+
+  const likeBlogMutation = useMutation({
+    mutationFn: blogService.addLikes,
+    onSuccess: (returedBlog) => {
+      queryClient.invalidateQueries(["blogs"]);
+      NotificationDispatch({
+        type: "SET",
+        content: {
+          text: `You have voted for ${returedBlog.title} by ${returedBlog.author}`,
+          isError: false,
+        },
+      });
+    },
+    onError: () => {
+      NotificationDispatch({
+        type: "SET",
+        content: {
+          text: "Something went wrong",
+          isError: true,
+        },
+      });
+    },
+  });
+
+  const addNewBlog = (newBlog) => {
+    newBlogFormRef.current.toggleVisibility();
+    newBlogMutation.mutate(newBlog);
+    setTimeout(() => {
+      NotificationDispatch({ type: "RESET" });
+    }, 5000);
+  };
+
+  const addLikes = async (likedBlog) => {
+    likeBlogMutation.mutate({ ...likedBlog, user: likedBlog.user.id });
+    setTimeout(() => {
+      NotificationDispatch({ type: "RESET" });
+    }, 5000);
+  };
+
+  const removeBlog = (idTodelete) => {
+    deleteBlogMutation.mutate(idTodelete);
     setTimeout(() => {
       NotificationDispatch({ type: "RESET" });
     }, 5000);
