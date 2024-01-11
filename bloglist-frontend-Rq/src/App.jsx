@@ -8,17 +8,25 @@ import Notification from "./components/Notification";
 import NewBlogForm from "./components/NewBlogForm";
 import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
+import {
+  setLoggedUserInfo,
+  useLoggedUserInfo,
+} from "./components/LoggedUserContext";
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const loggedUserInfoDispatch = setLoggedUserInfo();
+  const userInfo = useLoggedUserInfo();
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      loggedUserInfoDispatch({ type: "SET", content: user });
       blogService.setToken(user.token);
     }
   }, []);
+
   const result = useQuery({
     queryKey: ["blogs"],
     queryFn: blogService.getAll,
@@ -28,14 +36,51 @@ const App = () => {
   const NotificationDispatch = setNotificationValue();
   const newBlogFormRef = useRef();
 
-  const queryClient = useQueryClient();
+  const handleLogin = async (userData) => {
+    try {
+      const user = await loginService.login(userData);
+      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
+      loggedUserInfoDispatch({ type: "SET", content: user });
+      NotificationDispatch({ type: "RESET" });
+    } catch (exception) {
+      NotificationDispatch({
+        type: "SET",
+        content: {
+          text: "Wrong username or password",
+          isError: true,
+        },
+      });
+      setTimeout(() => {
+        NotificationDispatch({ type: "RESET" });
+      }, 5000);
+    }
+  };
+
+  const handleLogout = async () => {
+    window.localStorage.removeItem("loggedBlogAppUser");
+    NotificationDispatch({ type: "RESET" });
+    loggedUserInfoDispatch({ type: "RESET" });
+  };
+  const newBlogForm = () => (
+    <Togglable
+      buttonLabelOpen="Create a new blog"
+      buttonLabelClose="Cancel"
+      ref={newBlogFormRef}
+    >
+      <NewBlogForm submitBlog={addNewBlog} />
+    </Togglable>
+  );
+
   const newBlogMutation = useMutation({
     mutationFn: blogService.createBlog,
     onSuccess: (newBlog) => {
       const blogs = queryClient.getQueryData(["blogs"]);
       queryClient.setQueryData(
         ["blogs"],
-        blogs.concat({ ...newBlog, user: { name: user.name, id: user.id } })
+        blogs.concat({
+          ...newBlog,
+          user: { name: userInfo.name, id: userInfo.id },
+        })
       );
       NotificationDispatch({
         type: "SET",
@@ -117,52 +162,17 @@ const App = () => {
     }, 5000);
   };
 
-  const handleLogin = async (userData) => {
-    try {
-      const user = await loginService.login(userData);
-      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
-      setUser(user);
-      NotificationDispatch({ type: "RESET" });
-    } catch (exception) {
-      NotificationDispatch({
-        type: "SET",
-        content: {
-          text: "Wrong username or password",
-          isError: true,
-        },
-      });
-      setTimeout(() => {
-        NotificationDispatch({ type: "RESET" });
-      }, 5000);
-    }
-  };
-
-  const handleLogout = async () => {
-    window.localStorage.removeItem("loggedBlogAppUser");
-    NotificationDispatch({ type: "RESET" });
-    setUser("");
-  };
-  const newBlogForm = () => (
-    <Togglable
-      buttonLabelOpen="Create a new blog"
-      buttonLabelClose="Cancel"
-      ref={newBlogFormRef}
-    >
-      <NewBlogForm submitBlog={addNewBlog} />
-    </Togglable>
-  );
-
   return (
     <div>
       <h1 style={{ fontSize: 50 }}>
         <em>Blogs</em>
       </h1>
       <Notification />
-      {!user && <LoginForm loginHandler={handleLogin} />}
-      {user && (
+      {!userInfo && <LoginForm loginHandler={handleLogin} />}
+      {userInfo && (
         <div>
           <p>
-            {user.name} logged in{" "}
+            {userInfo.name} logged in{" "}
             <button onClick={() => handleLogout()}>logout</button>
           </p>
           {newBlogForm()}
@@ -175,7 +185,7 @@ const App = () => {
                     key={blog.id}
                     blog={blog}
                     handleLikes={addLikes}
-                    currentUser={user}
+                    currentUser={userInfo}
                     deleteHandler={removeBlog}
                   />
                 ))}
