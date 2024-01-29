@@ -1,7 +1,7 @@
 <h1>Full Stack Web Development Open - Part 7</h1>
 
 React router, custom hooks, styling app with CSS and webpack</br>
-Exercises are commits. Done **13** out of _21_
+Exercises are commits. Done **14** out of _21_
 </br></br>
 
 <h3>Routed-Anecdotes</h3>
@@ -117,6 +117,8 @@ Exercises are commits. Done **13** out of _21_
  ┣ 📂cypress
  ┣ 📂src
  ┃ ┣ 📂components
+ ┃ ┃ ┣ 📜AllBlogs.jsx
+ ┃ ┃ ┣ 📜AllUsers.jsx
  ┃ ┃ ┣ 📜Togglable.jsx
  ┃ ┃ ┣ 📜Notification.jsx
  ┃ ┃ ┣ 📜NotificationContext.jsx
@@ -127,7 +129,8 @@ Exercises are commits. Done **13** out of _21_
  ┃ ┃ ┣ 📜BlogList.jsx
  ┃ ┃ ┗ 📜Blog.jsx
  ┃ ┣ 📂services
- ┃ ┃ ┣ 📜login.jsx
+ ┃ ┃ ┣ 📜users.js
+ ┃ ┃ ┣ 📜login.js
  ┃ ┃ ┗ 📜blogs.js
  ┃ ┣ 📜App.jsx
  ┃ ┗ 📜main.jsx
