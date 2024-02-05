@@ -1,4 +1,3 @@
-import Togglable from "./Togglable";
 import { useState } from "react";
 
 const Blog = ({ blog, handleLikes, deleteHandler, currentUser }) => {
