@@ -1,7 +1,7 @@
 <h1>Full Stack Web Development Open - Part 7</h1>
 
 React router, custom hooks, styling app with CSS and webpack</br>
-Exercises are commits. Done **15** out of _21_
+Exercises are commits. Done **16** out of _21_
 </br></br>
 
 <h3>Routed-Anecdotes</h3>
@@ -127,6 +127,7 @@ Exercises are commits. Done **15** out of _21_
  ┃ ┃ ┣ 📜NewBlogForm.jsx
  ┃ ┃ ┣ 📜Blog.test.jsx
  ┃ ┃ ┣ 📜BlogList.jsx
+ ┃ ┃ ┣ 📜BlogView.jsx
  ┃ ┃ ┗ 📜Blog.jsx
  ┃ ┣ 📂services
  ┃ ┃ ┣ 📜users.js

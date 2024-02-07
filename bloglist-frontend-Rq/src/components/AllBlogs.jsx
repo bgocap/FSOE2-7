@@ -1,12 +1,14 @@
 import blogService from "../services/blogs";
-import Blog from "./Blog";
+import BlogView from "./BlogView";
 import NewBlogForm from "./NewBlogForm";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
 import Togglable from "./Togglable";
 import { setNotificationValue } from "./NotificationContext";
+import { useNavigate, Route, Routes, Link } from "react-router-dom";
 
 const allBlogs = ({ userInfo }) => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const result = useQuery({
     queryKey: ["blogs"],
@@ -103,6 +105,7 @@ const allBlogs = ({ userInfo }) => {
   };
 
   const removeBlog = (idTodelete) => {
+    navigate("/blogs");
     deleteBlogMutation.mutate(idTodelete);
     setTimeout(() => {
       NotificationDispatch({ type: "RESET" });
@@ -119,23 +122,49 @@ const allBlogs = ({ userInfo }) => {
     </Togglable>
   );
 
+  const Bloglist = ({ blogs }) => {
+    const blogstyle = {
+      marginBottom: 3,
+      borderColor: "Black",
+      borderStyle: "solid",
+      borderRadius: 10,
+      padding: 5,
+    };
+
+    return (
+      <>
+        {newBlogForm()}
+        <div className="allBlogs">
+          {blogs &&
+            blogs
+              .sort((blgA, blgB) => blgB.likes - blgA.likes)
+              .map((blog) => (
+                <div key={blog.id} style={blogstyle}>
+                  <Link to={`/blogs/${blog.id}`}>{`${blog.title} `}</Link>
+                  {`by ${blog.author} `}
+                </div>
+              ))}
+        </div>
+      </>
+    );
+  };
+
   return (
     <>
-      {newBlogForm()}
-      <div className="allBlogs">
-        {blogs &&
-          blogs
-            .sort((blgA, blgB) => blgB.likes - blgA.likes)
-            .map((blog) => (
-              <Blog
-                key={blog.id}
-                blog={blog}
-                handleLikes={addLikes}
-                currentUser={userInfo}
-                deleteHandler={removeBlog}
-              />
-            ))}
-      </div>
+      <Routes>
+        <Route path="/" element={<Bloglist blogs={blogs} />} />
+        <Route
+          path="/:id"
+          element={
+            <BlogView
+              blogs={blogs}
+              likeHandler={addLikes}
+              loggedUser={userInfo}
+              deleteHandler={removeBlog}
+            />
+          }
+        />
+      </Routes>
     </>
   );
 };

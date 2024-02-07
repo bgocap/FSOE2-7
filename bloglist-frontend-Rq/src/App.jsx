@@ -70,7 +70,10 @@ const App = () => {
               <button onClick={() => handleLogout()}>logout</button>
             </p>
             <Routes>
-              <Route path="/" element={<AllBlogs userInfo={userInfo} />} />
+              <Route
+                path="/blogs/*"
+                element={<AllBlogs userInfo={userInfo} />}
+              />
               <Route path="/users/*" element={<AllUsers />} />
             </Routes>
           </div>
