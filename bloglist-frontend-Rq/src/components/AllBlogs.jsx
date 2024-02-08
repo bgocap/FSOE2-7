@@ -112,15 +112,17 @@ const allBlogs = ({ userInfo }) => {
     }, 5000);
   };
 
-  const newBlogForm = () => (
-    <Togglable
-      buttonLabelOpen="Create a new blog"
-      buttonLabelClose="Cancel"
-      ref={newBlogFormRef}
-    >
-      <NewBlogForm submitBlog={addNewBlog} />
-    </Togglable>
-  );
+  const newBlogForm = () => {
+    return (
+      <Togglable
+        buttonLabelOpen="Create a new blog"
+        buttonLabelClose="Cancel"
+        ref={newBlogFormRef}
+      >
+        <NewBlogForm submitBlog={addNewBlog} />
+      </Togglable>
+    );
+  };
 
   const Bloglist = ({ blogs }) => {
     const blogstyle = {

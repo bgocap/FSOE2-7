@@ -3,7 +3,6 @@ import userService from "../services/users";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 
 const UserBlogs = ({ users }) => {
-  console.log(users);
   const id = useParams().id;
   if (!users) {
     return null;

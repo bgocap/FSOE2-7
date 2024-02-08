@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const BlogView = ({ blogs, loggedUser, likeHandler, deleteHandler }) => {
   const blogId = useParams().id;

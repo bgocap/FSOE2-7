@@ -1,11 +1,9 @@
 import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { setNotificationValue } from "./components/NotificationContext";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
-import userService from "./services/users";
 import {
   setLoggedUserInfo,
   useLoggedUserInfo,
@@ -13,6 +11,22 @@ import {
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import AllUsers from "./components/AllUsers";
 import AllBlogs from "./components/AllBlogs";
+
+const NavBar = ({ user, logoutHandler }) => {
+  const NavBarStyle = {
+    marginTop: 0,
+    background: "#f0f8ff",
+    padding: 5,
+  };
+  return (
+    <div style={NavBarStyle}>
+      <Link to="/blogs">blogs</Link>
+      <Link to="/users"> users</Link>
+      {`  ${user.name} logged in`}
+      <button onClick={() => logoutHandler()}>Log out</button>
+    </div>
+  );
+};
 
 const App = () => {
   const loggedUserInfoDispatch = setLoggedUserInfo();
@@ -57,28 +71,28 @@ const App = () => {
 
   return (
     <Router>
-      <div>
-        <h1 style={{ fontSize: 50 }}>
-          <em>Blogs</em>
-        </h1>
-        <Notification />
-        {!userInfo && <LoginForm loginHandler={handleLogin} />}
-        {userInfo && (
-          <div>
-            <p>
-              {userInfo.name} logged in{" "}
-              <button onClick={() => handleLogout()}>logout</button>
-            </p>
-            <Routes>
-              <Route
-                path="/blogs/*"
-                element={<AllBlogs userInfo={userInfo} />}
-              />
-              <Route path="/users/*" element={<AllUsers />} />
-            </Routes>
-          </div>
-        )}
-      </div>
+      {!userInfo && (
+        <>
+          <h1 style={{ fontSize: 50 }}>
+            <em>Blogs</em>
+          </h1>
+          <Notification />
+          <LoginForm loginHandler={handleLogin} />
+        </>
+      )}
+      {userInfo && (
+        <>
+          <NavBar user={userInfo} logoutHandler={handleLogout} />
+          <h1 style={{ fontSize: 50 }}>
+            <em>Blogs</em>
+          </h1>
+          <Notification />
+          <Routes>
+            <Route path="/blogs/*" element={<AllBlogs userInfo={userInfo} />} />
+            <Route path="/users/*" element={<AllUsers />} />
+          </Routes>
+        </>
+      )}
     </Router>
   );
 };
