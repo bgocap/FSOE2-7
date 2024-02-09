@@ -23,10 +23,24 @@ const addLikes = async (likedBlog) => {
   return request.data;
 };
 
+const addComment = async (newComment) => {
+  const request = await axios.post(`${baseUrl}/${newComment.blogId}/comments`, {
+    comment: newComment.content,
+  });
+  return request.data;
+};
+
 const deleteBlog = async (idToDelete) => {
   const config = { headers: { authorization: token } };
   const request = await axios.delete(`${baseUrl}/${idToDelete}`, config);
   return request.data;
 };
 
-export default { getAll, setToken, createBlog, addLikes, deleteBlog };
+export default {
+  getAll,
+  setToken,
+  createBlog,
+  addLikes,
+  addComment,
+  deleteBlog,
+};
