@@ -16,7 +16,11 @@ const UserBlogs = ({ users }) => {
           {user.blogs.length === 0 ? (
             <p>No blogs added</p>
           ) : (
-            user.blogs.map((blog) => <li key={blog.id}>{blog.title}</li>)
+            user.blogs.map((blog) => (
+              <li key={blog.id}>
+                <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+              </li>
+            ))
           )}
         </ul>
       </>

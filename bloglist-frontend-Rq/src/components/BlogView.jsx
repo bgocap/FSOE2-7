@@ -26,6 +26,16 @@ const BlogView = ({ blogs, loggedUser, likeHandler, deleteHandler }) => {
         {addedByUser && (
           <button onClick={() => deleteHandler(blogId)}>delete</button>
         )}
+        <h2>Comments:</h2>
+        {blog.comments.length === 0 || !blog.comments ? (
+          <div>No comments yet</div>
+        ) : (
+          <ul>
+            {blog.comments.map((cmnt) => (
+              <li key={cmnt}>{cmnt}</li>
+            ))}
+          </ul>
+        )}
       </>
     );
   }
