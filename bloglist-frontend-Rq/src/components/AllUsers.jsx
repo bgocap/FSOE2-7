@@ -32,7 +32,7 @@ const UsersChart = ({ users }) => {
   const id = useParams().id;
   return (
     <>
-      <h1>Users</h1>
+      <h1 className="text-2xl font-bold underline">Users</h1>
       <table>
         <thead>
           <tr>

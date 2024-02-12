@@ -72,19 +72,19 @@ const App = () => {
   return (
     <Router>
       {!userInfo && (
-        <>
-          <h1 style={{ fontSize: 50 }}>
-            <em>Blogs</em>
-          </h1>
-          <Notification />
-          <LoginForm loginHandler={handleLogin} />
-        </>
+        <div className="w-full h-screen p-4 size-100  bg-slate-800">
+          <div className=" flex flex-col items-center">
+            <h1 className="p-9 font-serif text-white text-6xl">Blogs</h1>
+            <Notification />
+            <LoginForm loginHandler={handleLogin} />
+          </div>
+        </div>
       )}
       {userInfo && (
         <>
           <NavBar user={userInfo} logoutHandler={handleLogout} />
-          <h1 style={{ fontSize: 50 }}>
-            <em>Blogs</em>
+          <h1 className="box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-4xl font-bold text-white">
+            Blogs
           </h1>
           <Notification />
           <Routes>
