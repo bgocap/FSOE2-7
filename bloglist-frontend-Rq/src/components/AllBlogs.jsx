@@ -141,9 +141,14 @@ const allBlogs = ({ userInfo }) => {
             blogs
               .sort((blgA, blgB) => blgB.likes - blgA.likes)
               .map((blog) => (
-                <div key={blog.id} style={blogstyle}>
-                  <Link to={`/blogs/${blog.id}`}>{`${blog.title} `}</Link>
-                  {`by ${blog.author} `}
+                <div
+                  key={blog.id}
+                  className="m-3 rounded border-gray-900 bg-white hover:bg-slate-400 hover:m-4 hover:shadow-md "
+                >
+                  <Link to={`/blogs/${blog.id}`}>
+                    <h3 className="color-white">{`${blog.title} `}</h3>
+                  </Link>
+                  <p>{`by ${blog.author} `}</p>
                 </div>
               ))}
         </div>

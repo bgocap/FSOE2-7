@@ -18,13 +18,57 @@ const NavBar = ({ user, logoutHandler }) => {
     background: "#f0f8ff",
     padding: 5,
   };
-  return (
+  /*   return (
     <div style={NavBarStyle}>
       <Link to="/blogs">blogs</Link>
       <Link to="/users"> users</Link>
       {`  ${user.name} logged in`}
       <button onClick={() => logoutHandler()}>Log out</button>
     </div>
+  ); */
+
+  return (
+    <>
+      <nav class="bg-gradient-to-r from-indigo-600 to-pink-500">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+          <Link to="/blogs">
+            <h1 className="text-4xl font-bold text-white">Blogs</h1>
+          </Link>
+          <div
+            class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+            id="navbar-user"
+          >
+            <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:border-gray-700">
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 px-3 text-white rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+                  aria-current="page"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  Users
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  Logout
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </>
   );
 };
 
@@ -83,9 +127,6 @@ const App = () => {
       {userInfo && (
         <>
           <NavBar user={userInfo} logoutHandler={handleLogout} />
-          <h1 className="box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-4xl font-bold text-white">
-            Blogs
-          </h1>
           <Notification />
           <Routes>
             <Route path="/blogs/*" element={<AllBlogs userInfo={userInfo} />} />
