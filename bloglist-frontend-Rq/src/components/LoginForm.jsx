@@ -6,7 +6,7 @@ const Input = ({ id, type, value, changeHandler, placeholder }) => (
       id={id}
       type={type || "text"}
       value={value}
-      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
       onChange={({ target }) => changeHandler(target.value)}
       placeholder={placeholder}
     />
@@ -25,56 +25,55 @@ const LoginForm = ({ loginHandler }) => {
   };
 
   return (
-    <>
-      <div className="m-5 max-w-sm">
-        <h2
-          className="text-3xl font-bold  text-gray-900 dark:text-white"
-          id="loginTitle"
-        >
-          Login
-        </h2>
+    <div className="max-w-400">
+      <h2
+        className=" ml-5 mb-5 text-3xl italic font-bold font-serif"
+        id="loginTitle"
+      >
+        Login
+      </h2>
+      <div className="p-5 border rounded-lg border-gray-300">
+        <form className="max-w-sm mx-auto" onSubmit={Login}>
+          <div className="mb-5">
+            <label
+              target="usernameInput"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Username
+            </label>
+            <Input
+              id="usernameInput"
+              name={"Username"}
+              value={username}
+              changeHandler={setUsername}
+              placeholder="Aino Toivola"
+            />
+          </div>
+          <div className="mb-5">
+            <label
+              target="passwordInput"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Password
+            </label>
+            <Input
+              id="passwordInput"
+              type="password"
+              name={"Password"}
+              value={password}
+              changeHandler={setPassword}
+            />
+          </div>
+          <button
+            id="loginButton"
+            type="submit"
+            className=" font-serif border round-lg  text-black hover:text-white hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+          >
+            Log In
+          </button>
+        </form>
       </div>
-
-      <form className="max-w-sm mx-auto" onSubmit={Login}>
-        <div className="mb-5">
-          <label
-            for="usernameInput"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Username
-          </label>
-          <Input
-            id="usernameInput"
-            name={"Username"}
-            value={username}
-            changeHandler={setUsername}
-            placeholder="Aino Toivola"
-          />
-        </div>
-        <div className="mb-5">
-          <label
-            for="passwordInput"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Password
-          </label>
-          <Input
-            id="passwordInput"
-            type="password"
-            name={"Password"}
-            value={password}
-            changeHandler={setPassword}
-          />
-        </div>
-        <button
-          id="loginButton"
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Log In
-        </button>
-      </form>
-    </>
+    </div>
   );
 };
 

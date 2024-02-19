@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import userService from "../services/users";
-import { Routes, Route, Link, useParams } from "react-router-dom";
+import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
 
 const UserBlogs = ({ users }) => {
   const id = useParams().id;
@@ -29,30 +29,37 @@ const UserBlogs = ({ users }) => {
 };
 
 const UsersChart = ({ users }) => {
+  const navigate = useNavigate();
   const id = useParams().id;
   return (
-    <>
-      <h1 className="text-2xl font-bold underline">Users</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Blogs created</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users &&
-            users.map((user) => (
-              <tr key={user.id}>
-                <td>
-                  <Link to={`/users/${user.id}`}>{user.name}</Link>
-                </td>
-                <td>{user.blogs.length}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-    </>
+    <div className="m-3 mt-10 font-serif">
+      <h1 className="text-7xl  ">Users</h1>
+      <div className="mt-6 flex justify-center">
+        <table className="w-3/4 m-4 p-3 ">
+          <thead className=" text-2xl italic">
+            <tr>
+              <th className="text-start p-3">Name</th>
+              <th>Blogs created</th>
+            </tr>
+          </thead>
+          <tbody className="border rounded-xl border-gray-300">
+            {users &&
+              users.map((user) => (
+                <tr
+                  onClick={() => {
+                    navigate(`${user.id}`);
+                  }}
+                  key={user.id}
+                  className=" hover:text-white font-serif font-medium bg-white hover:bg-gray-400 hover:m-4 hover:shadow-md cursor-pointer"
+                >
+                  <td className="p-3 ">{user.name}</td>
+                  <td className="text-center">{user.blogs.length}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 

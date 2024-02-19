@@ -6,9 +6,10 @@ import { useRef } from "react";
 import Togglable from "./Togglable";
 import { setNotificationValue } from "./NotificationContext";
 import { useNavigate, Route, Routes, Link } from "react-router-dom";
+import { flushSync } from "react-dom";
 
 const allBlogs = ({ userInfo }) => {
-  const navigate = useNavigate();
+  document.startViewTransition();
   const queryClient = useQueryClient();
   const result = useQuery({
     queryKey: ["blogs"],
@@ -124,6 +125,26 @@ const allBlogs = ({ userInfo }) => {
     );
   };
 
+  const BlogLink = ({ to, children }) => {
+    const navigate = useNavigate();
+    return (
+      <a
+        href={to}
+        onClick={(ev) => {
+          ev.preventDefault();
+          console.log("Onclick");
+          document.startViewTransition(() => {
+            flushSync(() => {
+              navigate(to);
+            });
+          });
+        }}
+      >
+        {children}
+      </a>
+    );
+  };
+
   const Bloglist = ({ blogs }) => {
     const blogstyle = {
       marginBottom: 3,
@@ -132,27 +153,29 @@ const allBlogs = ({ userInfo }) => {
       borderRadius: 10,
       padding: 5,
     };
-
+    document.startViewTransition();
     return (
-      <>
+      <div className="m-3 mt-10">
+        <h1 className="text-7xl font-serif">Blogs</h1>
         {newBlogForm()}
         <div className="allBlogs">
           {blogs &&
             blogs
               .sort((blgA, blgB) => blgB.likes - blgA.likes)
               .map((blog) => (
-                <div
-                  key={blog.id}
-                  className="m-3 rounded border-gray-900 bg-white hover:bg-slate-400 hover:m-4 hover:shadow-md "
-                >
-                  <Link to={`/blogs/${blog.id}`}>
-                    <h3 className="color-white">{`${blog.title} `}</h3>
-                  </Link>
-                  <p>{`by ${blog.author} `}</p>
-                </div>
+                <BlogLink to={`/blogs/${blog.id}`}>
+                  <div
+                    key={blog.id}
+                    className="mb-3 p-2 border rounded border-gray-300 hover:text-white font-serif font-medium bg-white hover:bg-gray-400 hover:m-4 hover:shadow-md "
+                  >
+                    <h3 className="text-xl">{`${blog.title} `}</h3>
+
+                    <h4 className="italic">{`by ${blog.author} `}</h4>
+                  </div>
+                </BlogLink>
               ))}
         </div>
-      </>
+      </div>
     );
   };
 
