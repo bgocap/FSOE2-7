@@ -1,7 +1,8 @@
 <h1>Full Stack Web Development Open - Part 7</h1>
 
 React router, custom hooks, styling app with CSS and webpack</br>
-Exercises are commits. Done **20** out of _21_
+Exercises are commits. Done **21** out of _21_
+Spent hours in styling: 5h 33min
 </br></br>
 
 <h3>Routed-Anecdotes</h3>
