@@ -67,9 +67,9 @@ const BlogView = ({ blogs, loggedUser, likeHandler, deleteHandler }) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="#000000"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M7 17l9.2-9.2M17 17V7H7" />
               </svg>
@@ -88,8 +88,8 @@ const BlogView = ({ blogs, loggedUser, likeHandler, deleteHandler }) => {
                 className="ml-2 w-5 h-5 stroke-black stroke-2 hover:stroke-red-500"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
               </svg>
@@ -114,9 +114,9 @@ const BlogView = ({ blogs, loggedUser, likeHandler, deleteHandler }) => {
                 value={commentary}
                 name="Comment"
                 onChange={({ target }) => setCommentary(target.value)}
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               />
-              <span class="inline-flex items-center ">
+              <span className="inline-flex items-center ">
                 <button>
                   <svg
                     className="w-7 h-7 stroke-current"

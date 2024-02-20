@@ -163,7 +163,7 @@ const allBlogs = ({ userInfo }) => {
             blogs
               .sort((blgA, blgB) => blgB.likes - blgA.likes)
               .map((blog) => (
-                <BlogLink to={`/blogs/${blog.id}`}>
+                <BlogLink key={blog.id} to={`/blogs/${blog.id}`}>
                   <div
                     key={blog.id}
                     className="mb-3 p-2 border rounded border-gray-300 hover:text-white font-serif font-medium bg-white hover:bg-gray-400 hover:m-4 hover:shadow-md "

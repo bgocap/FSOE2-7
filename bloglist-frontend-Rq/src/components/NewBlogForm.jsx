@@ -16,8 +16,8 @@ const NewBlogForm = ({ submitBlog }) => {
       <form onSubmit={createBlog}>
         <div className="mb-3">
           <label
-            for="default-input"
-            class="block mb-2 text-sm font-medium text-black"
+            scope="Title"
+            className="block mb-2 text-sm font-medium text-black"
           >
             Title
           </label>
@@ -28,15 +28,15 @@ const NewBlogForm = ({ submitBlog }) => {
             onChange={({ target }) =>
               setNewBlog({ ...newBlog, title: target.value })
             }
-            id="default-input"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            id="Title"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           />
         </div>
 
         <div className="mb-3">
           <label
-            for="small-input"
-            class="block mb-2 text-sm font-medium text-black"
+            scope="small-input"
+            className="block mb-2 text-sm font-medium text-black"
           >
             Author
           </label>
@@ -48,21 +48,21 @@ const NewBlogForm = ({ submitBlog }) => {
               setNewBlog({ ...newBlog, author: target.value })
             }
             id="small-input"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           />
         </div>
 
         <div className="mb-3">
           <label
-            for="small-input"
-            class="block mb-2 text-sm font-medium text-black"
+            scope="url"
+            className="block mb-2 text-sm font-medium text-black"
           >
             URL
           </label>
           <input
             type="text"
-            id="small-input"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            id="url"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             value={newBlog.url}
             name="URL"
             onChange={({ target }) =>

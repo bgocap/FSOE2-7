@@ -3,27 +3,36 @@ import userService from "../services/users";
 import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
 
 const UserBlogs = ({ users }) => {
+  const navigate = useNavigate();
   const id = useParams().id;
   if (!users) {
     return null;
   } else {
     const user = users.find((n) => n.id === String(id));
     return (
-      <>
-        <h1>{user.name}</h1>
-        <h2>Added Blogs</h2>
-        <ul>
-          {user.blogs.length === 0 ? (
-            <p>No blogs added</p>
-          ) : (
-            user.blogs.map((blog) => (
-              <li key={blog.id}>
-                <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-              </li>
-            ))
-          )}
-        </ul>
-      </>
+      <div className="m-4 mt-20 font-serif">
+        <h1 className="text-4xl">{user.name}</h1>
+        <h2 className=" italic text-2xl text-gray-500">Added Blogs:</h2>
+        <div className=" p-4 border-2 rounded-xl border-grey-500">
+          <ul>
+            {user.blogs.length === 0 ? (
+              <p>No blogs added</p>
+            ) : (
+              user.blogs.map((blog) => (
+                <li
+                  onClick={() => {
+                    navigate(`/blogs/${blog.id}`);
+                  }}
+                  key={blog.id}
+                  className=" p-2 m-1 border rounded-lg hover:text-white font-serif font-medium bg-white hover:bg-gray-400 hover:m-3 hover:shadow-md cursor-pointer"
+                >
+                  {blog.title}
+                </li>
+              ))
+            )}
+          </ul>
+        </div>
+      </div>
     );
   }
 };

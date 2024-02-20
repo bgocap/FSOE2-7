@@ -1,7 +1,7 @@
 <h1>Full Stack Web Development Open - Part 7</h1>
 
 React router, custom hooks, styling app with CSS and webpack</br>
-Exercises are commits. Done **19** out of _21_
+Exercises are commits. Done **20** out of _21_
 </br></br>
 
 <h3>Routed-Anecdotes</h3>
@@ -122,6 +122,7 @@ Exercises are commits. Done **19** out of _21_
  ┃ ┃ ┣ 📜Togglable.jsx
  ┃ ┃ ┣ 📜Notification.jsx
  ┃ ┃ ┣ 📜NotificationContext.jsx
+ ┃ ┃ ┣ 📜NavBar.jsx
  ┃ ┃ ┣ 📜LoginForm.jsx
  ┃ ┃ ┣ 📜LoggedUserContext.jsx
  ┃ ┃ ┣ 📜NewBlogForm.jsx
